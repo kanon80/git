@@ -375,8 +375,10 @@ static int get_packet_data(int fd, char **src_buf, size_t *src_size,
 
 int packet_length(const char lenbuf_hex[4])
 {
-	int val = hex2chr(lenbuf_hex);
-	return (val < 0) ? val : (val << 8) | hex2chr(lenbuf_hex + 2);
+	return	hexval(lenbuf_hex[0]) << 12 |
+		hexval(lenbuf_hex[1]) <<  8 |
+		hexval(lenbuf_hex[2]) <<  4 |
+		hexval(lenbuf_hex[3]);
 }
 
 static char *find_packfile_uri_path(const char *buffer)
